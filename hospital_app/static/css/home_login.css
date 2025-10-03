@@ -1,4 +1,4 @@
-/* Body & general layout */
+/* Body layout */
 body {
   background: linear-gradient(135deg, #e0f7fa, #ffffff, #b2ebf2);
   font-family: 'Poppins', sans-serif;
@@ -16,20 +16,14 @@ body {
   padding: 5%;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  width: 90vw;       
-  max-width: 450px;    
-  min-height: 60vh;    
+  width: 90vw;
+  max-width: 450px;
+  min-height: 60vh;
   text-align: center;
   box-sizing: border-box;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.login-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
-}
-
-/* Logo */
+/* App Logo */
 .logo-container {
   margin-bottom: 20px;
 }
@@ -38,7 +32,6 @@ body {
   width: 30%;
   min-width: 80px;
   max-width: 120px;
-  height: auto;
   border-radius: 50%;
   margin-bottom: 10px;
   border: 3px solid #00796b;
@@ -59,16 +52,17 @@ body {
 }
 
 /* Form fields */
-.form-control, .form-select {
+.form-control,
+.form-select {
   border-radius: 10px;
   padding: 12px;
   border: 1px solid #dcdcdc;
   margin-bottom: 12px;
   font-size: 1.05rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   border-color: #00796b;
   box-shadow: 0 0 6px rgba(0, 121, 107, 0.3);
 }
@@ -91,11 +85,10 @@ body {
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Register text */
+/* Register */
 .register-text {
   margin-top: 15px;
   font-size: 1rem;
-  text-align: center;
 }
 
 .register-text a {
@@ -112,43 +105,34 @@ body {
   font-size: 0.85rem;
 }
 
-/* Role select dropdown arrow */
-.role-select {
-  appearance: none; 
-  background-image: url("data:image/svg+xml,%3Csvg fill='%2300796b' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 16px;
-  cursor: pointer;
-}
-
-/* Fully responsive adjustments */
+/* Mobile full fit */
 @media screen and (max-width: 768px) {
+  body {
+    padding: 0; /* remove gaps */
+  }
   .login-box {
-    width: 95vw;     
-    min-height: 65vh;
-    padding: 6%;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;   /* remove round corners for app look */
+    box-shadow: none;   /* no shadow in fullscreen */
+    padding: 8% 6%;
   }
-
   .app-logo {
-    width: 40%;
-    min-width: 80px;
+    width: 35%;
+    min-width: 90px;
   }
-
   .app-name {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
-
   .login-heading {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
   }
-
-  .form-control, .form-select, .btn-login {
+  .form-control,
+  .form-select,
+  .btn-login {
     font-size: 1rem;
-    padding: 10px;
-  }
-
-  .register-text {
-    font-size: 0.95rem;
+    padding: 12px;
   }
 }
