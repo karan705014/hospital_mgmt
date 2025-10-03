@@ -1,19 +1,35 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px 0;
+    background-color: #f4f7f6;
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+}
+
+.form-wrapper {
+    max-width: 420px;
+    width: 90%;
+    margin: 30px auto;
+}
+
 form {
     background-color: #ffffff; 
-    padding: 35px 30px;
+    padding: 30px;
     border-radius: 20px;
-    width: 400px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-    margin: 50px auto;
-    font-family: 'Arial', sans-serif;
-    position: relative;
+    width: 100%;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    box-sizing: border-box;
 }
 
 h2 {
     text-align: center;
     color: #00796b;  
-    margin-bottom: 25px;
-    font-size: 24px;
+    margin-bottom: 30px;
+    font-size: 28px;
 }
 
 label {
@@ -21,138 +37,99 @@ label {
     font-weight: 600;
     margin-bottom: 8px;
     color: #004d40;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 input[type="time"],
 input[type="date"],
 select {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
     box-sizing: border-box;
-    font-size: 16px;
-    transition: border 0.3s;
+    font-size: 18px;
+    transition: border 0.3s, box-shadow 0.3s;
+    appearance: none;
+}
+
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%2300796b' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
 }
 
 input[type="time"]:focus,
 input[type="date"]:focus,
 select:focus {
     border-color: #00796b;
+    box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
     outline: none;
 }
 
 button {
     background-color: #00796b;
     color: white;
-    padding: 12px 0;
+    padding: 18px 0;
     width: 100%;
     border: none;
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 121, 107, 0.3);
 }
 
 button:hover {
     background-color: #004d40;
     transform: translateY(-2px);
-}
-
-.form-wrapper {
-    width: 420px;
-    margin: 50px auto;
-}
-
-.message {
-    padding: 14px 20px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.message.success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #2e7d32;
-}
-
-.message.error {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #c62828;
-}
-
-.form-wrapper h2,
-.form-wrapper .message {
-    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 121, 107, 0.4);
 }
 
 .welcome-message {
     text-align: center;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 600;
     color: #004d40; 
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    padding: 0 10px;
 }
 
-/* Responsive: Tablets */
-@media (max-width: 768px) {
+/* Unified Mobile Responsiveness */
+@media (max-width: 600px) {
+    
     .form-wrapper {
-        width: 90%;
-        margin: 30px auto;
-    }
-
-    form {
-        width: 100%;
-        padding: 25px 20px;
-    }
-
-    h2 {
-        font-size: 22px;
-    }
-
-    .welcome-message {
-        font-size: 16px;
-    }
-}
-
-/* Responsive: Mobile phones */
-@media (max-width: 480px) {
-    .form-wrapper {
-        width: 95%;
+        width: 90%; 
         margin: 20px auto;
     }
-
+    
     form {
-        padding: 20px 15px;
+        padding: 25px 20px;
         border-radius: 15px;
     }
 
     h2 {
-        font-size: 20px;
-        margin-bottom: 20px;
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+
+    label {
+        font-size: 16px;
     }
 
     input[type="time"],
     input[type="date"],
     select {
-        font-size: 14px;
-        padding: 10px;
+        padding: 14px;
+        font-size: 16px;
+        margin-bottom: 20px;
     }
 
     button {
-        font-size: 14px;
-        padding: 10px 0;
-    }
-
-    .welcome-message {
-        font-size: 15px;
+        padding: 16px 0;
+        font-size: 18px;
     }
 }

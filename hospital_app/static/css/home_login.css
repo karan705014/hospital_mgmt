@@ -1,3 +1,4 @@
+/* Body & general layout */
 body {
   background: linear-gradient(135deg, #e0f7fa, #ffffff, #b2ebf2);
   font-family: 'Poppins', sans-serif;
@@ -6,16 +7,21 @@ body {
   align-items: center;
   min-height: 100vh;
   margin: 0;
+  padding: 10px;
 }
 
+/* Login box */
 .login-box {
   background: #fff;
-  padding: 35px 35px;
+  padding: 5%;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  width: 360px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 90vw;       
+  max-width: 450px;    
+  min-height: 60vh;    
   text-align: center;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-box:hover {
@@ -23,39 +29,42 @@ body {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Logo */
 .logo-container {
   margin-bottom: 20px;
 }
 
 .app-logo {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%; /* circular logo */
+  width: 30%;
+  min-width: 80px;
+  max-width: 120px;
+  height: auto;
+  border-radius: 50%;
   margin-bottom: 10px;
-  border: 3px solid #00796b; /* theme color border */
+  border: 3px solid #00796b;
 }
 
 .app-name {
-  color: #00796b; /* theme color */
+  color: #00796b;
   font-weight: 700;
-  font-size: 22px;
-  margin-bottom: 8px; /* small gap below project name */
+  font-size: 1.8rem;
+  margin-bottom: 8px;
 }
 
 .login-heading {
   color: #00796b;
   font-weight: 600;
-  font-size: 18px;
-  margin-bottom: 15px; /* small gap below "Login Here" */
+  font-size: 1.4rem;
+  margin-bottom: 15px;
 }
 
+/* Form fields */
 .form-control, .form-select {
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #dcdcdc;
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: 1.05rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -64,14 +73,15 @@ body {
   box-shadow: 0 0 6px rgba(0, 121, 107, 0.3);
 }
 
+/* Login button */
 .btn-login {
   background-color: #00796b;
   color: #fff;
   border-radius: 25px;
-  padding: 10px;
+  padding: 12px;
   width: 100%;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 1.05rem;
   transition: 0.3s ease;
 }
 
@@ -81,9 +91,10 @@ body {
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* Register text */
 .register-text {
   margin-top: 15px;
-  font-size: 14px;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -93,27 +104,15 @@ body {
   font-weight: 500;
 }
 
+/* Footer */
 .footer-text {
   text-align: center;
   margin-top: 15px;
   color: #777;
-  font-size: 12px;
+  font-size: 0.85rem;
 }
 
-.form-control, .form-select {
-  border-radius: 10px;
-  padding: 10px;
-  border: 1px solid #dcdcdc;
-  margin-bottom: 12px;
-  font-size: 14px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-control:focus, .form-select:focus {
-  border-color: #00796b;
-  box-shadow: 0 0 6px rgba(0, 121, 107, 0.3);
-}
-
+/* Role select dropdown arrow */
 .role-select {
   appearance: none; 
   background-image: url("data:image/svg+xml,%3Csvg fill='%2300796b' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
@@ -122,4 +121,34 @@ body {
   background-size: 16px;
   cursor: pointer;
 }
- 
+
+/* Fully responsive adjustments */
+@media screen and (max-width: 768px) {
+  .login-box {
+    width: 95vw;     
+    min-height: 65vh;
+    padding: 6%;
+  }
+
+  .app-logo {
+    width: 40%;
+    min-width: 80px;
+  }
+
+  .app-name {
+    font-size: 1.5rem;
+  }
+
+  .login-heading {
+    font-size: 1.25rem;
+  }
+
+  .form-control, .form-select, .btn-login {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .register-text {
+    font-size: 0.95rem;
+  }
+}
