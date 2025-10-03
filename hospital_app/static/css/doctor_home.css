@@ -1,199 +1,185 @@
- body {
-            background: linear-gradient(135deg, #071726, #0f3b56, #143a6b);
-            color: #e6f0fa;
-            min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
-            padding: 30px 0;
-        }
+body {
+  background: linear-gradient(135deg, #071726, #0f3b56, #143a6b);
+  color: #e6f0fa;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  padding: 30px 0;
+}
 
-        .card {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 8px 24px rgba(2, 18, 28, 0.6);
-            color: #e6f0fa;
-        }
+.card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 24px rgba(2, 18, 28, 0.6);
+  color: #e6f0fa;
+}
 
-        .card-header {
-            background: linear-gradient(90deg, rgba(7, 23, 38, 0.6), rgba(20, 58, 107, 0.6));
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
+.card-header {
+  background: linear-gradient(90deg, rgba(7, 23, 38, 0.6), rgba(20, 58, 107, 0.6));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
 
-        .btn-logout {
-            background: transparent;
-            border: 1px solid rgba(230, 240, 250, 0.12);
-            color: #e6f0fa;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
+.btn-logout {
+  background: transparent;
+  border: 1px solid rgba(230, 240, 250, 0.12);
+  color: #e6f0fa;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
 
-        /* Table Header */
-        .table thead th {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 14px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-        }
+.table thead th {
+  background: #0f3b56;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  padding: 12px;
+}
 
-        .table tbody tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
+.table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
 
-        /* Status labels */
-        .status {
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: capitalize;
-        }
+.status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: capitalize;
+}
 
-        .status.pending {
-            background: rgba(255, 215, 0, 0.12);
-            color: #ffd700;
-        }
+.status.pending {
+  background: rgba(255, 215, 0, 0.12);
+  color: #ffd700;
+}
 
-        .status.approved {
-            background: rgba(120, 255, 160, 0.12);
-            color: #8ef2b1;
-        }
+.status.approved {
+  background: rgba(120, 255, 160, 0.12);
+  color: #8ef2b1;
+}
 
-        .status.rejected {
-            background: rgba(255, 110, 110, 0.12);
-            color: #ff8b8b;
-        }
+.status.rejected {
+  background: rgba(255, 110, 110, 0.12);
+  color: #ff8b8b;
+}
 
-        /* Action buttons */
-        .btn.approve {
-            background: #198754;
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            padding: 6px 14px;
-            margin-right: 5px;
-        }
+.btn.approve {
+  background: #198754;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  margin-right: 5px;
+}
 
-        .btn.approve:hover {
-            background: #146c43;
-        }
+.btn.approve:hover {
+  background: #146c43;
+}
 
-        .btn.reject {
-            background: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            padding: 6px 14px;
-            margin-right: 5px;
-        }
+.btn.reject {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  margin-right: 5px;
+}
 
-        .btn.reject:hover {
-            background: #a71d2a;
-        }
+.btn.reject:hover {
+  background: #a71d2a;
+}
 
-        .btn.pending {
-            background: #ffc107;
-            color: #000;
-            border: none;
-            border-radius: 20px;
-            padding: 6px 14px;
-        }
+.btn.pending {
+  background: #ffc107;
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+}
 
-        .btn.pending:hover {
-            background: #d39e00;
-        }
+.btn.pending:hover {
+  background: #d39e00;
+}
 
-        .no-data {
-            text-align: center;
-            padding: 30px;
-            color: #cfe8ff;
-        }
+.no-data {
+  text-align: center;
+  padding: 30px;
+  color: #cfe8ff;
+}
 
-        .table thead th {
-            background: #0f3b56;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 14px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-            padding: 12px;
-        }
-
-        /*  MOBILE RESPONSIVE DASHBOARD / TABLE */
 @media (max-width: 768px) {
+  body {
+    padding: 20px 10px;
+  }
 
-    body {
-        padding: 20px 10px;
-    }
+  .card {
+    margin-bottom: 20px;
+    padding: 15px;
+  }
 
-    .card {
-        margin-bottom: 20px;
-        padding: 15px;
-    }
+  .card-header {
+    font-size: 16px;
+    padding: 12px 10px;
+  }
 
-    .card-header {
-        font-size: 16px;
-        padding: 12px 10px;
-    }
+  .btn-logout {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
 
-    .btn-logout {
-        padding: 5px 10px;
-        font-size: 13px;
-    }
+  .table thead th, 
+  .table tbody td {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
 
-    /* Table adjustments */
-    .table thead th, .table tbody td {
-        font-size: 12px;
-        padding: 8px 6px;
-    }
+  .status {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
 
-    .status {
-        padding: 4px 8px;
-        font-size: 11px;
-    }
+  .btn.approve,
+  .btn.reject,
+  .btn.pending {
+    padding: 4px 10px;
+    font-size: 11px;
+    margin-right: 3px;
+  }
 
-    .btn.approve,
-    .btn.reject,
-    .btn.pending {
-        padding: 4px 10px;
-        font-size: 11px;
-        margin-right: 3px;
-    }
-
-    .no-data {
-        padding: 20px;
-        font-size: 13px;
-    }
+  .no-data {
+    padding: 20px;
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 480px) {
+  .card {
+    padding: 12px;
+  }
 
-    /* Very small screens */
-    .card {
-        padding: 12px;
-    }
+  .card-header {
+    font-size: 14px;
+  }
 
-    .card-header {
-        font-size: 14px;
-    }
+  .table thead th,
+  .table tbody td {
+    font-size: 11px;
+    padding: 6px 4px;
+  }
 
-    .table thead th,
-    .table tbody td {
-        font-size: 11px;
-        padding: 6px 4px;
-    }
+  .status {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
 
-    .status {
-        font-size: 10px;
-        padding: 3px 6px;
-    }
+  .btn.approve,
+  .btn.reject,
+  .btn.pending {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
 
-    .btn.approve,
-    .btn.reject,
-    .btn.pending {
-        font-size: 10px;
-        padding: 3px 8px;
-    }
-
-    .no-data {
-        font-size: 12px;
-        padding: 15px;
-    }
+  .no-data {
+    font-size: 12px;
+    padding: 15px;
+  }
 }

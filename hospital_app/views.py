@@ -1,276 +1,285 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from rest_framework.decorators import api_view 
-from .serializers import PatientSerializer
-from .models import Patient,Doctor,Appointment,Admin
-from django.utils import timezone
-from .decorators import admin_required,doctor_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Appointment, User
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
-# from django.contrib import messages
-
-
-
-
-# Create your views here.
+# Home page
 def home(request):
-    return render(request, "home.html")
+    return render(request, "new_login_home.html")
 
+# Registration page
 def registration_detail(request):
     return render(request,"register_form.html")
 
-
-@api_view(['POST'])
+#  registration data
 def registration_store(request):
-    serializer=PatientSerializer(data=request.data)
-    if serializer.is_valid():
-      serializer.save()
-      return render(request,"registration_done.html")
-    return redirect('register_api')
-
-
-
-def patient_login(request):
-    return render(request,"patient_login.html")
-
-
-# ye without rest hai for easy
-def patient_verify(request):
-    errror=None
-    if request.method=="POST":
-        phone=request.POST.get("phone")
-        password=request.POST.get("password")
-        try:
-            patient=Patient.objects.get(phone=phone,password=password)
-            request.session['patient_id'] = patient.id
-            return redirect("book_appointment")
-        except Patient.DoesNotExist:
-            errror="invalid username or password"
-    return render(request,"register_form.html",{"errror":errror})
-
-
-
-def book_appointment(request):
-    doctors = Doctor.objects.all()
-    
-    # Patient fetch from session
-    patient_id = request.session.get("patient_id")
-    patient = None
-    if patient_id:
-        try:
-            patient = Patient.objects.get(id=patient_id)
-        except Patient.DoesNotExist:
-            patient = None
-    
-    if request.method == "POST":
-        doctor_id = request.POST.get("doctor")
-        appointment_time = request.POST.get("time")
-        date=request.POST.get("date")
-        doctor = Doctor.objects.get(id=doctor_id)
-
-        if patient:  # only save if patient is logged in
-            Appointment.objects.create(
-                patient=patient,
-                doctor=doctor,
-                time=appointment_time,
-                date=date if date else timezone.now().date()
-            )
-            return redirect('appointment_success')
-        else:
-            message = "Patient not logged in!"
-
-        return render(request, "book_appointment.html", {"doctors": doctors, "message": message})
-
-    return render(request, "book_appointment.html", {"doctors": doctors})
-
-
-
-def  appointment_success(request):
-    return render(request,"appointment_sucess.html")
-
-def status_verify(request):
-    return render(request,"status_verify.html")
-
-def status_check(request):
-    if request.method=="POST":
-        phone=request.POST.get("phone")
-        password=request.POST.get("password")
-
-        try:
-            patient=Patient.objects.get(phone=phone,password=password)
-            request.session['patient_id']=patient.id
-            return redirect("status_page")
-        except Patient.DoesNotExist:
-            error="ivalid user name or paassword"
-    return redirect('home')
-
-def status_page(request):
-    if "patient_id" not in request.session:
-        return redirect("patient_login")  
-
-    patient_id = request.session["patient_id"]
-    appointments = Appointment.objects.filter(patient_id=patient_id).order_by("-id")
-
-    return render(request, "status_page.html", {"appointments": appointments})
-
-
-
-def admin_login(request):
-    return render(request,"admin_login.html")
-
-
-def admin_verify(request):
-    error=None
-    if request.method=='POST':
-        phone=request.POST.get("phone")
-        password=request.POST.get("password")
-
-        try:
-            admin=Admin.objects.get(phone=phone,password=password)
-            request.session['admin_id']=admin.id
-            # next_url = request.GET.get('next')
-            # if next_url:
-            #     return redirect(next_url)
-
-            return redirect("admin_home")
-        except Admin.DoesNotExist:
-            error="invlid phone and password"
-    return render(request,"admin_login.html",{"error":error})
-
-
-@admin_required 
-def admin_dashboard(request):
-    appointments = Appointment.objects.all().order_by('-id')
-    return render(request, "admin_dashboard.html", {"appointments": appointments})
-
-
-@admin_required
-def admin_home(request):
-    return render(request, "admin_home.html")
-
-
-
-
-def admin_logout(request):
-    request.session.flush()   # puri session clear
-    return redirect("admin_login")
-
-
-@admin_required 
-def update_status(request, appointment_id, status):
-    appt = get_object_or_404(Appointment, id=appointment_id)
-    appt.status = status
-    appt.save()
-    return redirect('admin_dashboard')
-
-
-@admin_required 
-def doctor_add_page(request):
-    doctors=Doctor.objects.all().order_by('-id')
-    return render(request,"doctor_add_page.html",{"doctors":doctors})
-
-@admin_required 
-def delete_doctor(request,doctor_id):
-     doc=get_object_or_404(Doctor,id=doctor_id)
-     doc.delete()
-     return redirect('doctor_add_page')
-
-
-@admin_required 
-def manage_doctors(request):
-    
     if request.method == 'POST':
-        name = request.POST.get("name")
-        specialty = request.POST.get("specialty")
-        phone=request.POST.get("phone")
-        password=request.POST.get("password")
-
-        # Doctor object create karke save 
-        Doctor.objects.create(
-            name=name,
-            specialty=specialty,
-            phone=phone,
-            password=password
-        )
-        return redirect('doctor_add_page') 
-    doctors= Doctor.objects.all()
-    return render(request,"doctor_add_page.html",{"doctors":doctors})
-    
-
-@admin_required 
-def patient_add_page(request):
-        
-        patients=Patient.objects.all().order_by("-id")
-        return render(request,"patient_add_page.html",{"patients":patients})
-
-@admin_required 
-def delete_patient(request,patient_id):
-      patient=get_object_or_404(Patient,id=patient_id)
-      patient.delete()
-      return redirect('patient_add_page')
-
-
-@admin_required 
-def manage_patients(request):
-    if request.method=='POST':
+        username = request.POST.get("username")
         name=request.POST.get("name")
-        phone=request.POST.get("phone")
-        email=request.POST.get("email")
-        password=request.POST.get("password")
-        gender=request.POST.get("gender")
-        age=request.POST.get("age")
-
-        Patient.objects.create(
-            name=name,
-            phone=phone,
-            email=email,
-            password=password,
-            gender=gender,
-            age=age
-        )
-        return redirect('patient_add_page')
-    patients=Patient.objects.all()
-    return render(request,"patient_add_page.html",{"patients":patients})
-
-
-def doctor_login(request):
-    return render (request,"doctor_login.html")
-
-
-
-
-def doctor_verify(request):
-    if request.method == 'POST':
+        email = request.POST.get("email")
         phone = request.POST.get("phone")
         password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+        age = request.POST.get("age")
+        gender = request.POST.get("gender")
 
+        if password != confirm_password:
+            error = "Passwords do not match!"
+            return render(request, 'register_form.html', {"error": error})
+
+
+        if User.objects.filter(username=username).exists():
+            error = "Username already taken!"
+            return render(request, 'register_form.html', {"error": error})
+
+        user = User.objects.create_user(
+            username=username,
+            name=name,
+            email=email,
+            password=password,
+            phone=phone,
+            age=age,
+            gender=gender,
+            role='patient'
+        )
+        return render(request, "new_login_home.html", {"message": "You has been registered login here!"})
+
+    else:
+        return render(request, 'register_form.html',{"error": "Invalid username or password!"})
+    
+# Verify login
+def login_verify(request):
+    error=None
+    if request.method=='POST':
+        role=request.POST.get("role")
+        username=request.POST.get("username")
+        password=request.POST.get("password")
         try:
-            doctor = Doctor.objects.get(phone=phone, password=password)
-            request.session['doctor_id'] = doctor.id
-            return redirect("doctor_home")  
-        except Doctor.DoesNotExist:
-            error = "Invalid phone or password"
-            return render(request, "doctor_login.html", {"error": error})
+            user = User.objects.filter(username=username, role=role).first()
+            if user and check_password(password,user.password):
+                request.session['user_id']=user.id
+                request.session['role']=user.role
 
-    return render(request, "doctor_login.html")
+                if role=='patient':
+                    return redirect('patient_home')
+                if role=='doctor':
+                    return redirect('doctor_home')
+                if role=='admin':
+                    return redirect('admin_home')
+            else:
+                error="invalid username or password"
+        except User.DoesNotExist:
+            error=f"no {role} found with this username"
+    return render(request,"new_login_home.html",{"error":error})
 
 
-@doctor_required
+# Patient book appointment
+def book_appointment(request):
+    user_id =request.session.get("user_id")
+    doctors = User.objects.filter(role="doctor")
+
+    time_slots = [
+      "06:00" ,"09:00", "12:00", "15:00"
+    ]
+    if user_id:
+        patient=get_object_or_404(User,id=user_id,role="patient")
+
+    return render(request, "book_appointment.html", {
+        "doctors": doctors,
+        "time_slots": time_slots,
+        "patient":patient
+    })
+
+
+def appointment_store(request):
+    doctors=User.objects.filter(role="doctor")
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return render(request, "book_appointment.html", {
+            "doctors": doctors,
+            "message": "Please login first"
+        })
+
+    user = get_object_or_404(User, role="patient", id=user_id)
+
+    if request.method=='POST':
+        doctor_id=request.POST.get("doctors")
+        time=request.POST.get("time")
+        date=request.POST.get("date")
+        doctor=User.objects.get(id=doctor_id, role="doctor")
+
+        exists = Appointment.objects.filter(
+            doctor_id=doctor_id,
+            date=date,
+            time=time
+        ).exists()
+
+        if exists:
+            messages.error(request, "this slot has been already booked !")
+            return redirect("book_appointment")
+
+        if user.role=="patient":
+            Appointment.objects.create(
+                patient=user,
+                doctor=doctor,
+                date=date,
+                time=time
+            )
+            messages.success(request, "Your appointment has been booked! Once approved, your status will be updated.")
+            return redirect('patient_home') 
+        else:
+            return render(request,"book_appointment.html",{
+                "doctors":doctors,
+                "message":"only patient can login here"
+            })
+    return render(request,"book_appointment.html")
+
+
+# Doctor home
 def doctor_home(request):
-    doctor_id=request.session.get('doctor_id')
-    doctor=get_object_or_404(Doctor,id=doctor_id)
+    user_id=request.session.get("user_id")
+    if not user_id:
+        return redirect('home',{"message":"no user found"})
+    
+    doctor=get_object_or_404(User, id=user_id, role="doctor")
     appointments=Appointment.objects.filter(doctor=doctor).order_by('-date','-time')
-    return render(request,"doctor_home.html",{"doctor":doctor,"appointments":appointments})
+    return render(request,"doctor_home.html",{"appointments":appointments,"doctor":doctor})
 
+# Doctor updates appointment status
 def update_status_doctor(request, appointment_id, status):
     appt = get_object_or_404(Appointment, id=appointment_id)
     appt.status = status
     appt.save()
     return redirect('doctor_home')
 
+
+# Admin home
+def admin_home(request):
+    user_id=request.session.get("user_id")
+    if not user_id:
+        return redirect('home',{"message":"user not found"})
+    return render(request, "admin_home.html")
+
+def adminpage_logout(request):
+    request.session.flush()
+    return redirect("home")
+
+
+# Admin dashboard
+def admin_dashboard(request):
+    appointments = Appointment.objects.all().order_by('-id')
+    return render(request, "admin_dashboard.html", {"appointments": appointments})
+
+def update_status(request, appointment_id, status):
+    appointments=get_object_or_404(Appointment, id=appointment_id)
+    appointments.status=status
+    appointments.save()
+    return redirect('admin_dashboard')
+
+
+# Manage doctors
+def doctor_add_page(request):
+    doctors=User.objects.filter(role="doctor")
+    return render(request,"doctor_add_page.html",{"doctors":doctors})
+
+def delete_doctor(request, doctor_id):
+    doctors=User.objects.get(id=doctor_id)
+    doctors.delete()
+    return redirect('doctor_add_page')
+
+
+def add_doctor(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        speciality = request.POST.get("speciality")
+        phone = request.POST.get("phone")
+        password = request.POST.get("password")
+        gender = request.POST.get("gender")
+
+        try:
+            doctor = User.objects.create(
+                username=username,
+                name=name,
+                email=email,
+                phone=phone,
+                speciality=speciality,
+                gender=gender,
+                role='doctor'   
+            )
+            doctor.set_password(password)  
+            doctor.save()
+            return redirect('doctor_add_page')
+
+        except Exception as K:
+            error = f"Something went wrong: {str(K)}"
+            return render(request, "doctor_add_page.html", {"error": error})
+        
+    return render(request, "doctor_add_page.html")
+
+
+# Doctor logout
 def doctor_logout(request):
     request.session.flush()
-    return redirect('doctor_login')
+    return redirect('home')
+
+#admin-manage patient
+def patient_add_page(request):
+    patients=User.objects.filter(role="patient")
+    return render(request,"patient_add_page.html",{"patients":patients})
+
+#admin-delete patient
+def delete_patient(request,patient_id):
+    patients=User.objects.get(id=patient_id)
+    patients.delete()
+    return redirect('patient_add_page')
+
+#admin-add patient
+def add_patient(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        password = request.POST.get("password")
+        gender = request.POST.get("gender")
+
+        try:
+            patient = User.objects.create(
+                username=username,
+                name=name,
+                email=email,
+                phone=phone,
+                gender=gender
+            )
+            patient.set_password(password)  
+            patient.save()
+            return redirect('patient_add_page')
+
+        except Exception as k:
+            error = f"Something went wrong: {str(k)}"
+            return render(request, "patient_add_page.html", {"error": error})
+
+    return render(request, "patient_add_page.html")
 
 
-def patient_guide(request):
-    return render(request,"patient_guide.html")
+#add new page in which patient have option of cheak status and book appointment
+def patient_home(request):
+    return render(request,"patient_home.html")
+
+def patient_status(request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return redirect('home') 
+    appointments = Appointment.objects.filter(patient_id=user_id).order_by('-id')
+    return render(request, "status_page.html", {"appointments": appointments})
+
+
+
+
+###############################   END     ################################

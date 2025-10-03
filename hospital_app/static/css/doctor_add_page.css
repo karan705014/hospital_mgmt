@@ -1,83 +1,105 @@
-
 body {
-  background: linear-gradient(135deg, #1e1e2f, #2c2c3f, #3a3a5a);
+  background: linear-gradient(135deg, #004d40, #00695c, #00796b);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #e0e0e0;
+  color: #e0f7fa;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Admin form box */
 .form-box {
-  background: #2f2f44;
+  background: #00695c;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   width: 400px;
-  border: 1px solid #444466; 
+  border: 1px solid #004d40; 
+  color: #e0f7fa;
 }
 
-/* Admin form labels */
 .form-label {
   font-weight: 600;
-  color: #cfd8dc;
+  color: #a7ffeb;
 }
 
-/* Buttons */
 button {
-  background-color: #4cafee; 
-  color: #fff;
+  background-color: #43a047;
+  color: #e0f7fa;
   padding: 10px 20px;
   border: none;
   border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 
 button:hover {
-  background-color: #3a9bdc; 
+  background-color: #388e3c; 
+  transform: scale(1.03);
 }
 
-
-/* logout css */
 .logout-container {
-    text-align: right;
-    margin-bottom: 20px;
+  text-align: right;
+  margin-bottom: 20px;
 }
 
-/* Logout Button Styling */
 .logout-btn {
-    display: inline-block;
-    background-color: #dc3545; /* Red */
-    color: #fff;
-    font-weight: 600;
-    padding: 10px 18px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.3s ease;
+  display: inline-block;
+  background-color: #ffa726;
+  color: #1b1b1b;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
 }
 
-/* Hover Effect */
 .logout-btn:hover {
-    background-color: #a71d2a; /* Darker Red */
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  background-color: #fb8c00;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
-    .logout-container {
-        text-align: center;
-        margin-bottom: 15px;
-    }
+  .form-box {
+    width: 90%;
+    padding: 25px;
+  }
 
-    .logout-btn {
-        width: 100%;
-        padding: 12px 0;
-        font-size: 16px;
-    }
+  .logout-container {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .logout-btn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-box {
+    width: 95%;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+
+  .logout-btn {
+    font-size: 14px;
+    padding: 10px 0;
+  }
 }

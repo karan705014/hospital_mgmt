@@ -131,3 +131,5 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = '/patient/login/'        # login view ke liya
 LOGIN_REDIRECT_URL = '/dashboard/'
+
+AUTH_USER_MODEL = 'hospital_app.User' 

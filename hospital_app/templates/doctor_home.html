@@ -46,9 +46,9 @@
                                     {% for appt in appointments %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ appt.patient.name }}</td>
+                                        <td>{{ appt.patient}}</td>
                                         <td>{{ appt.date|date:"d M, Y" }}</td>
-                                        <td>{{ appt.time|time:"H:i" }}</td>
+                                        <td>{{ appt.time|time:"h:i A" }}</td>
                                         <td>
                                             <span class="status {{ appt.status|lower }}">{{ appt.status }}</span>
                                         </td>
@@ -59,7 +59,7 @@
                                                 class="btn reject">Reject</a>
                                             <a href="{% url 'update_status_doctor' appt.id 'pending' %}"
                                                 class="btn pending">Pending</a>
-                                        </td>
+                                        </td> 
                                     </tr>
                                     {% endfor %}
                                 </tbody>

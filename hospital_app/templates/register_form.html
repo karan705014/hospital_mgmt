@@ -1,129 +1,88 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Registration</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <style>
-    body {
-      /* Hospital theme background */
-      background: linear-gradient(135deg, #e0f7fa, #ffffff, #b2ebf2);
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-
-    .form-container {
-      background: #fff;
-      padding: 25px 30px;
-      border-radius: 16px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-      max-width: 380px;   /* 👈 box width kam kiya */
-      width: 100%;
-      animation: fadeInDown 0.8s ease-in-out;
-    }
-
-    .form-container h2 {
-      color: #00796b;
-      text-align: center;
-      margin-bottom: 18px;
-      font-weight: 700;
-      font-size: 22px;
-    }
-
-    .custom-input {
-      border-radius: 10px;
-      padding: 10px;
-      border: 1px solid #dcdcdc;
-      transition: all 0.3s ease;
-      font-size: 14px;
-    }
-
-    .custom-input:focus {
-      border-color: #00796b;
-      box-shadow: 0 0 6px rgba(0, 121, 107, 0.3);
-    }
-
-    .btn-register {
-      background-color: #00796b;
-      color: #fff;
-      border-radius: 25px;
-      padding: 10px;
-      transition: 0.3s;
-      font-weight: 600;
-      font-size: 15px;
-    }
-
-    .btn-register:hover {
-      background-color: #004d40;
-      transform: scale(1.04);
-      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-    }
-  </style>
+  <!-- Apni CSS file link karo -->
+  <link rel="stylesheet" href="{% static 'css/patient_register.css' %}">
 </head>
+
 <body>
 
-  <div class="form-container animate__animated animate__fadeInDown">
-    <h2> Patient Registration</h2>
+  <div class="form-container">
+    <h2>Patient Registration</h2>   
+     {% if message %}
+    <div class="alert alert-success">
+      {{ message }}
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
+    {% endif %}
+
     <form method="post" action="{% url 'register_api' %}">
-    {% csrf_token %}
+      {% csrf_token %}
 
-    <!-- Name -->
-    <div class="mb-2">
-        <label class="form-label">Full Name</label>
-        <input type="text" class="form-control" name="name" placeholder="Enter full name" required>
-    </div>
+      <div class="mb-2">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control custom-input" name="username" placeholder="The username must be unique" required>
+      </div>
 
-    <!-- Email -->
-    <div class="mb-2">
+      <div class="mb-2">
+        <label class="form-label">name</label>
+        <input type="text" class="form-control custom-input" name="name" placeholder="enter your full name" required>
+      </div>
+
+      <div class="mb-2">
         <label class="form-label">Email</label>
-        <input type="email" class="form-control" name="email" placeholder="example@email.com" required>
-    </div>
+        <input type="email" class="form-control custom-input" name="email" placeholder="example@email.com" required>
+      </div>
 
-    <!-- Phone -->
-    <div class="mb-2">
+      <div class="mb-2">
         <label class="form-label">Phone</label>
-        <input type="text" class="form-control" name="phone" placeholder="Enter 10-digit number" required>
-    </div>
+        <input type="text" class="form-control custom-input" name="phone" placeholder="Enter 10-digit number" required>
+      </div>
 
-    <!-- Password -->
-    <div class="mb-2">
+      <div class="mb-2">
         <label class="form-label">Password</label>
-        <input type="password" class="form-control" name="password" placeholder="Enter password" required>
-    </div>
+        <input type="password" class="form-control custom-input" name="password" placeholder="Enter password" minlength="8" required>
+      </div>
 
-    <!-- Age -->
-    <div class="mb-2">
+      <div class="mb-2">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" class="form-control custom-input" name="confirm_password" placeholder="Enter password again" required>
+      </div>
+
+      <div class="mb-2">
         <label class="form-label">Age</label>
-        <input type="number" class="form-control" name="age" placeholder="Enter your age" required>
-    </div>
+        <input type="number" class="form-control custom-input" name="age" placeholder="Enter your age" required>
+      </div>
 
-    <!-- Gender -->
-    <div class="mb-3">
+      <div class="mb-3">
         <label class="form-label">Gender</label>
-        <select class="form-select" name="gender" required>
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
+        <select class="form-select custom-input" name="gender" required>
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
         </select>
-    </div>
+      </div>
 
-    <div class="d-grid">
-        <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-</form>
+      <div class="d-grid">
+        <button type="submit" class="btn-register">Register</button>
+      </div>
+    </form>
 
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -11,7 +11,7 @@
     <div class="dashboard-container">
         <!-- Logout Button -->
         <div class="logout-container">
-            <a href="{% url 'admin_logout' %}" class="btn logout-btn">Logout</a>
+            <a href="{% url 'adminpage_logout' %}" class="btn logout-btn">Logout</a>
         </div>
 
         <h2 class="dashboard-title">ADMIN - DASHBOARD</h2>
@@ -30,8 +30,8 @@
             <tbody>
                 {% for appt in appointments %}
                 <tr>
-                    <td>{{ appt.patient.name }}</td>
-                    <td>{{ appt.doctor.name }}</td>
+                    <td>{{ appt.patient }}</td>
+                    <td>{{ appt.doctor }}</td>
                     <td>{{ appt.time }}</td>
                     <td>{{ appt.date }}</td>
                     <td>
@@ -43,11 +43,11 @@
                             <span class="status rejected">Rejected</span>
                         {% endif %}
                     </td>
-                    <td>
+                     <td>
                         <a href="{% url 'update_status' appt.id 'approved' %}" class="btn approve">Approve</a>
                         <a href="{% url 'update_status' appt.id 'rejected' %}" class="btn reject">Reject</a>
                         <a href="{% url 'update_status' appt.id 'pending' %}" class="btn pending">Pending</a>
-                    </td>
+                    </td> 
                 </tr>
                 {% empty %}
                 <tr>

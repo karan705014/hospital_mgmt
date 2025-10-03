@@ -1,37 +1,35 @@
-/* Background */
 body {
-  background: linear-gradient(135deg, #1e1e2f, #2c2c3f, #3a3a5a);
+  background: linear-gradient(135deg, #004d40, #00695c, #00796b);
   min-height: 100vh;
   margin: 0;
   padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #e0e0e0;
+  color: #e0f7fa;
 }
 
-/* Card design */
 .card {
-  background: #2f2f44;
-  border: 1px solid #444466;
+  background: #004d40;
+  border: 1px solid #00695c;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  color: #e0f7fa;
 }
 
-/* Card headers */
 .card-header {
   font-weight: bold;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
+  color: #a7ffeb;
 }
 
-/* Table styles */
 .table {
-  color: #e0e0e0;
-  background-color: #2f2f44;
+  color: #e0f7fa;
+  background-color: #004d40;
 }
 
 .table th {
-  background-color: #3a3a5a;
-  color: #ffffff;
+  background-color: #00796b;
+  color: #e0f7fa;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
@@ -40,54 +38,120 @@ body {
 
 .table td, .table th {
   vertical-align: middle;
+  text-align: center;
 }
 
-/* Buttons */
-.btn-success {
-  background-color: #4cafee;
+.btn-success, .btn.approve {
+  background-color: #43a047;
   border: none;
   font-weight: 600;
   border-radius: 25px;
   transition: background 0.3s;
+  color: #e0f7fa;
 }
 
-.btn-success:hover {
-  background-color: #3a9bdc;
+.btn-success:hover, .btn.approve:hover {
+  background-color: #388e3c;
 }
 
-.btn-danger {
+.btn-danger, .btn.reject {
+  background-color: #e53935;
+  color: #e0f7fa;
   border-radius: 20px;
   font-weight: 600;
 }
 
-/* Form controls */
+.btn-danger:hover, .btn.reject:hover {
+  background-color: #b71c1c;
+}
+
+.btn.pending {
+  background-color: #ffa726;
+  color: #fff;
+}
+
+.btn.pending:hover {
+  background-color: #fb8c00;
+}
+
 .form-control, .form-select {
-  background-color: #3a3a5a;
-  color: #e0e0e0;
-  border: 1px solid #555577;
+  background-color: #00695c;
+  color: #e0f7fa;
+  border: 1px solid #004d40;
   border-radius: 8px;
 }
 
 .form-control::placeholder {
-  color: #b0b0b0;
+  color: #b2dfdb;
 }
 
 .form-control:focus, .form-select:focus {
-  background-color: #444466;
+  background-color: #00796b;
   color: #fff;
-  border-color: #4cafee;
-  box-shadow: 0 0 0 0.2rem rgba(76, 175, 238, 0.25);
+  border-color: #43a047;
+  box-shadow: 0 0 0 0.2rem rgba(67, 160, 71, 0.25);
 }
+
+.logout-container {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.logout-btn {
+  display: inline-block;
+  background-color: #dc3545;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #a71d2a;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.status.pending {
+  color: #fff3e0;
+  background: #ffa726;
+}
+
+.status.approved {
+  color: #e8f5e9;
+  background: #43a047;
+}
+
+.status.rejected {
+  color: #ffebee;
+  background: #e53935;
+}
+
 @media (max-width: 768px) {
-  h2 {
-    font-size: 1.4rem;
-  }
-  .card-header {
+  h2, .card-header {
     font-size: 1rem;
   }
   .table th, .table td {
     font-size: 0.85rem;
     padding: 8px;
+  }
+  .logout-container {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .logout-btn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
   }
 }
 
@@ -99,45 +163,4 @@ body {
     font-size: 0.9rem;
     padding: 8px;
   }
-}
-
-
-/* logout css */
-.logout-container {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-/* Logout Button Styling */
-.logout-btn {
-    display: inline-block;
-    background-color: #dc3545; /* Red */
-    color: #fff;
-    font-weight: 600;
-    padding: 10px 18px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-/* Hover Effect */
-.logout-btn:hover {
-    background-color: #a71d2a; /* Darker Red */
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .logout-container {
-        text-align: center;
-        margin-bottom: 15px;
-    }
-
-    .logout-btn {
-        width: 100%;
-        padding: 12px 0;
-        font-size: 16px;
-    }
 }

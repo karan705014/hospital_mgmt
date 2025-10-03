@@ -12,7 +12,7 @@
 <body>
     <div class="container mt-5">
         <div class="logout-container">
-            <a href="{% url 'admin_logout' %}" class="btn logout-btn">Logout</a>
+            <a href="{% url 'adminpage_logout' %}" class="btn logout-btn">Logout</a>
         </div>
 
         <h2 class="text-center mb-4">MANAGE - PATIENTS</h2>
@@ -55,50 +55,58 @@
 
         <!-- Add Patient Form -->
         <div class="card">
-            <div class="card-header bg-primary text-white">➕ Add New Patient</div>
+            <div class="card-header bg-primary text-white">Add New Patient</div>
             <div class="card-body">
-                <form method="POST" action="{% url 'manage_patients' %}">
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                <form method="POST" action="{% url 'add_patient' %}">
                     {% csrf_token %}
                     <div class="row mb-3">
+                        <!-- Username -->
+                        <div class="col-md-6 mb-3">
+                            <h5>Username</h5>
+                            <input type="text" name="username" class="form-control" placeholder="Unique Username"
+                                required>
+                        </div>
+
                         <!-- Patient Name -->
                         <div class="col-md-6 mb-3">
+                            <h5>Name</h5>
                             <input type="text" name="name" class="form-control" placeholder="Patient Name" required>
                         </div>
 
+                        <!-- email -->
+                        <div class="col-md-6 mb-3">
+                            <h5>Email</h5>
+                            <input type="text" name="email" class="form-control" placeholder="email" required>
+                        </div>
+
+
                         <!-- Phone -->
                         <div class="col-md-6 mb-3">
+                            <h5>Phone</h5>
                             <input type="tel" name="phone" class="form-control" placeholder="Phone Number" required
                                 pattern="[0-9]{10}" title="Enter 10-digit phone number">
                         </div>
 
-                        <!-- Email -->
-                        <div class="col-md-6 mb-3">
-                            <input type="email" name="email" class="form-control" placeholder="Email" required>
-                        </div>
-
                         <!-- Password -->
                         <div class="col-md-6 mb-3">
+                            <h5>Password</h5>
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
                         </div>
 
-                        <!-- Gender -->
                         <div class="col-md-6 mb-3">
-                            <select name="gender" class="form-select" required>
-                                <option value="" disabled selected>Select Gender</option>
+                            <label class="form-label">Gender</label>
+                            <select class="form-select" name="gender" required>
+                                <option value="">Select</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
 
-                        <!-- Age -->
-                        <div class="col-md-6 mb-3">
-                            <input type="number" name="age" class="form-control" placeholder="Age" required min="0"
-                                max="120">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-success w-100">Add Patient</button>
+                        <button type="submit" class="btn btn-success w-100">Add Patient</button>
                 </form>
             </div>
         </div>
