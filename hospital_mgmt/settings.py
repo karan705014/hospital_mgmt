@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^)$sbw_(kv6=n(y2)qnp5*&+6gpmx#9h=gey70af#u8hjoz$%j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['karansinghks.pythonanywhere.com']
 
 
 # Application definition
@@ -133,3 +133,5 @@ LOGIN_URL = '/patient/login/'        # login view ke liya
 LOGIN_REDIRECT_URL = '/dashboard/'
 
 AUTH_USER_MODEL = 'hospital_app.User' 
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
