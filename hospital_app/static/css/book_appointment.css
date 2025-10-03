@@ -1,58 +1,70 @@
 body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     min-height: 100vh;
-    margin: 0;
-    padding: 20px 0;
-    background-color: #f4f7f6;
-    font-family: 'Arial', sans-serif;
+}
+
+.page-wrapper {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .welcome-message {
-    text-align: center;
     font-size: 20px;
     color: #333;
     margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.alert-container {
+    margin-bottom: 15px;
+}
+
+.alert-box {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    margin-bottom: 10px;
 }
 
 .form-wrapper {
-    width: 95%;
-    max-width: 480px;
-    margin: 0 auto;
-}
-
-form {
-    background-color: #ffffff;
+    background-color: #fff;
     padding: 35px 25px;
     border-radius: 18px;
-    width: 100%;
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    box-sizing: border-box;
 }
 
 h2 {
-    text-align: center;
-    margin-bottom: 20px;
     font-size: 28px;
     color: #00796b;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
     font-size: 18px;
     color: #444;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    text-align: left;
 }
 
 select, input[type="date"] {
     width: 100%;
     padding: 12px;
+    font-size: 16px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 16px;
     box-sizing: border-box;
 }
 
@@ -60,13 +72,13 @@ button {
     width: 100%;
     margin-top: 25px;
     padding: 14px;
+    font-size: 18px;
     border: none;
     border-radius: 25px;
     background-color: #00796b;
     color: #fff;
-    font-size: 18px;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: 0.3s ease;
 }
 
 button:hover {
@@ -74,19 +86,10 @@ button:hover {
     transform: scale(1.02);
 }
 
-.alert-box {
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #4caf50;
-}
-
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
-    body {
-        padding: 15px 10px;
+    .page-wrapper {
+        padding: 15px;
     }
 
     h2 {
@@ -98,7 +101,7 @@ button:hover {
     }
 
     select, input[type="date"] {
-        font-size: 16px;
+        font-size: 15px;
         padding: 10px;
     }
 
