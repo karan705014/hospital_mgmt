@@ -4,9 +4,10 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Doctors</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/doctor_add_page.css' %}?v=2">
+  <link rel="stylesheet" href="{% static 'css/doctor_add_page.css' %}?v=2">
 </head>
 
 <body>
@@ -19,28 +20,30 @@
       <div class="card-header bg-success text-white">All Doctors</div>
       <div class="card-body">
         {% if doctors %}
-        <table class="table table-bordered table-striped text-center">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Specialization</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for doc in doctors %}
-            <tr>
-              <td>{{ doc.id }}</td>
-              <td>{{ doc.name }}</td>
-              <td>{{ doc.speciality }}</td>
-              <td>
-                <a href="{% url 'delete_doctor' doc.id %}" class="btn btn-danger btn-sm">Delete</a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped text-center">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Specialization</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for doc in doctors %}
+              <tr>
+                <td>{{ doc.id }}</td>
+                <td>{{ doc.name }}</td>
+                <td>{{ doc.speciality }}</td>
+                <td>
+                  <a href="{% url 'delete_doctor' doc.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
         {% else %}
         <p class="text-center">No doctors found.</p>
         {% endif %}
@@ -57,38 +60,32 @@
         <form method="POST" action="{% url 'add_doctor' %}">
           {% csrf_token %}
           <div class="row mb-3">
-            <!-- Username -->
             <div class="col-md-6 mb-3">
               <h5>Username</h5>
               <input type="text" name="username" class="form-control" placeholder="Unique Username" required>
             </div>
 
-            <!-- Doctor Name -->
             <div class="col-md-6 mb-3">
               <h5>Name</h5>
               <input type="text" name="name" class="form-control" placeholder="Doctor Name" required>
             </div>
 
-             <!-- email -->
-             <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3">
               <h5>Email</h5>
               <input type="text" name="email" class="form-control" placeholder="email" required>
             </div>
 
-            <!-- Speciality -->
             <div class="col-md-6 mb-3">
               <h5>Specialty</h5>
               <input type="text" name="speciality" class="form-control" placeholder="Speciality" required>
             </div>
 
-            <!-- Phone -->
             <div class="col-md-6 mb-3">
               <h5>Phone</h5>
               <input type="tel" name="phone" class="form-control" placeholder="Phone Number" required
                 pattern="[0-9]{10}" title="Enter 10-digit phone number">
             </div>
 
-            <!-- Password -->
             <div class="col-md-6 mb-3">
               <h5>Password</h5>
               <input type="password" name="password" class="form-control" placeholder="Password" required>
@@ -106,7 +103,7 @@
 
             <button type="submit" class="btn btn-success w-100">Add Doctor</button>
         </form>
-        <a href="{% url 'adminpage_logout' %}" style="float:right; margin:10px; color:red;">
+        <a href="{% url 'adminpage_logout' %}" class="logout-btn" style="float:right; margin:10px; color:red;">
           Logout
         </a>
       </div>

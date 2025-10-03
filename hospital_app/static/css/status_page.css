@@ -3,14 +3,15 @@ body {
     background: linear-gradient(135deg, #e0f7fa, #ffffff);
     min-height: 100vh;
     margin: 0;
-    padding: 30px 0;
+    padding: 20px 0;
     color: #2c3e50;
 }
 
 .container {
+    width: 95%;
     max-width: 900px;
     margin: auto;
-    padding: 15px;
+    padding: 10px;
 }
 
 .card {
@@ -19,6 +20,7 @@ body {
     box-shadow: 0 8px 30px rgba(0,0,0,0.08);
     padding: 30px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow-x: auto;
 }
 
 .card:hover {
@@ -29,12 +31,14 @@ body {
 h2 {
     font-weight: 700;
     color: #00796b;
+    text-align: center;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    min-width: 400px; 
 }
 
 table thead {
@@ -55,50 +59,31 @@ table tbody td {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.status-pending {
-    background: #ffeb3b33;
-    color: #fbc02d;
+.status-pending, .status-approved, .status-rejected {
     padding: 5px 12px;
     border-radius: 50px;
     font-weight: 600;
     font-size: 14px;
+    display: inline-block;
+    min-width: 70px;
 }
 
-.status-approved {
-    background: #4caf5033;
-    color: #388e3c;
-    padding: 5px 12px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.status-rejected {
-    background: #f4433633;
-    color: #d32f2f;
-    padding: 5px 12px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-p.text-center {
-    font-size: 16px;
-    margin-top: 20px;
-    color: #555;
-}
-
+/* Mobile adjustments */
 @media (max-width: 768px) {
     .card {
         padding: 20px;
     }
-    table thead th,
-    table tbody td {
+    h2 {
+        font-size: 24px;
+    }
+    table thead th, table tbody td {
         font-size: 14px;
         padding: 10px 6px;
     }
-    h2 {
-        font-size: 24px;
+    .status-pending, .status-approved, .status-rejected {
+        font-size: 13px;
+        padding: 4px 10px;
+        min-width: 60px;
     }
 }
 
@@ -106,18 +91,16 @@ p.text-center {
     .card {
         padding: 15px;
     }
-    table thead th,
-    table tbody td {
-        font-size: 12px;
-        padding: 8px 4px;
-    }
     h2 {
         font-size: 20px;
     }
-    .status-pending,
-    .status-approved,
-    .status-rejected {
+    table thead th, table tbody td {
+        font-size: 12px;
+        padding: 8px 4px;
+    }
+    .status-pending, .status-approved, .status-rejected {
         font-size: 12px;
         padding: 4px 8px;
+        min-width: 55px;
     }
 }

@@ -1,25 +1,23 @@
 body {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    padding: 20px 0; 
     background-color: #f4f7f6;
     font-family: 'Arial', sans-serif;
     box-sizing: border-box;
 }
 
-/* Wrapper */
 .form-wrapper {
-    max-width: 480px;
     width: 95%;
-    margin: auto;
+    max-width: 480px;
+    margin: 20px auto; 
 }
 
-/* Card look */
 form {
-    background-color: #ffffff; 
+    background-color: #ffffff;
     padding: 35px 25px;
     border-radius: 18px;
     width: 100%;
@@ -27,110 +25,26 @@ form {
     box-sizing: border-box;
 }
 
-/* Heading */
-h2 {
-    text-align: center;
-    color: #00796b;  
-    margin-bottom: 25px;
-    font-size: 26px;
-    font-weight: bold;
-}
-
-/* Labels */
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #004d40;
-    font-size: 17px;
-}
-
-/* Inputs */
-input[type="time"],
-input[type="date"],
-select {
-    width: 100%;
-    padding: 16px;
-    margin-bottom: 22px;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    font-size: 18px;
-    transition: border 0.3s, box-shadow 0.3s;
-    appearance: none;
-}
-
-/* Dropdown icon */
-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%2300796b' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    padding-right: 40px;
-}
-
-/* Focus effect */
-input[type="time"]:focus,
-input[type="date"]:focus,
-select:focus {
-    border-color: #00796b;
-    box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
-    outline: none;
-}
-
-/* Button */
-button {
-    background-color: #00796b;
-    color: white;
-    padding: 18px 0;
-    width: 100%;
-    border: none;
-    border-radius: 14px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 6px 18px rgba(0, 121, 107, 0.3);
-}
-
-button:hover {
-    background-color: #004d40;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(0, 121, 107, 0.4);
-}
-
-/* Welcome message */
-.welcome-message {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
-    color: #004d40; 
-    margin-bottom: 20px;
-}
-
-/* Mobile friendly */
+/* Mobile adjustments */
 @media (max-width: 600px) {
+    body {
+        padding: 20px 10px;
+    }
+
+    .form-wrapper {
+        width: 100%; 
+        margin: 10px auto;
+    }
+
     form {
         padding: 30px 20px;
         border-radius: 15px;
     }
 
-    h2 {
-        font-size: 24px;
-    }
-
-    label {
-        font-size: 16px;
-    }
-
+    h2 { font-size: 24px; }
+    label { font-size: 16px; }
     input[type="time"],
     input[type="date"],
-    select {
-        font-size: 17px;
-        padding: 15px;
-    }
-
-    button {
-        font-size: 19px;
-        padding: 16px;
-    }
+    select { font-size: 17px; padding: 15px; }
+    button { font-size: 19px; padding: 16px; }
 }
