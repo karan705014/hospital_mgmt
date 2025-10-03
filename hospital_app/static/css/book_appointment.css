@@ -1,51 +1,57 @@
 body {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 20px 0;
+    padding: 20px;
     background-color: #f4f7f6;
     font-family: 'Arial', sans-serif;
     box-sizing: border-box;
 }
 
+/* Wrapper */
 .form-wrapper {
-    max-width: 420px;
-    width: 90%;
-    margin: 30px auto;
+    max-width: 480px;
+    width: 95%;
+    margin: auto;
 }
 
+/* Card look */
 form {
     background-color: #ffffff; 
-    padding: 30px;
-    border-radius: 20px;
+    padding: 35px 25px;
+    border-radius: 18px;
     width: 100%;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
     box-sizing: border-box;
 }
 
+/* Heading */
 h2 {
     text-align: center;
     color: #00796b;  
-    margin-bottom: 30px;
-    font-size: 28px;
+    margin-bottom: 25px;
+    font-size: 26px;
+    font-weight: bold;
 }
 
+/* Labels */
 label {
     display: block;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: #004d40;
-    font-size: 16px;
+    font-size: 17px;
 }
 
+/* Inputs */
 input[type="time"],
 input[type="date"],
 select {
     width: 100%;
     padding: 16px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
     border-radius: 12px;
     border: 1px solid #ddd;
     box-sizing: border-box;
@@ -54,6 +60,7 @@ select {
     appearance: none;
 }
 
+/* Dropdown icon */
 select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%2300796b' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -61,6 +68,7 @@ select {
     padding-right: 40px;
 }
 
+/* Focus effect */
 input[type="time"]:focus,
 input[type="date"]:focus,
 select:focus {
@@ -69,51 +77,45 @@ select:focus {
     outline: none;
 }
 
+/* Button */
 button {
     background-color: #00796b;
     color: white;
     padding: 18px 0;
     width: 100%;
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(0, 121, 107, 0.3);
+    box-shadow: 0 6px 18px rgba(0, 121, 107, 0.3);
 }
 
 button:hover {
     background-color: #004d40;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 121, 107, 0.4);
+    box-shadow: 0 10px 22px rgba(0, 121, 107, 0.4);
 }
 
+/* Welcome message */
 .welcome-message {
     text-align: center;
     font-size: 18px;
     font-weight: 600;
     color: #004d40; 
-    margin-bottom: 25px;
-    padding: 0 10px;
+    margin-bottom: 20px;
 }
 
-/* Unified Mobile Responsiveness */
+/* Mobile friendly */
 @media (max-width: 600px) {
-    
-    .form-wrapper {
-        width: 90%; 
-        margin: 20px auto;
-    }
-    
     form {
-        padding: 25px 20px;
+        padding: 30px 20px;
         border-radius: 15px;
     }
 
     h2 {
         font-size: 24px;
-        margin-bottom: 25px;
     }
 
     label {
@@ -123,13 +125,12 @@ button:hover {
     input[type="time"],
     input[type="date"],
     select {
-        padding: 14px;
-        font-size: 16px;
-        margin-bottom: 20px;
+        font-size: 17px;
+        padding: 15px;
     }
 
     button {
-        padding: 16px 0;
-        font-size: 18px;
+        font-size: 19px;
+        padding: 16px;
     }
 }
