@@ -35,9 +35,7 @@
                     <td>{{ appt.time }}</td>
                     <td>{{ appt.date }}</td>
                     <td>
-                        {% if appt.status == "pending" %}
-                            <span class="status pending">Pending</span>
-                        {% elif appt.status == "approved" %}
+                        {% if appt.status == "approved" %}
                             <span class="status approved">Approved</span>
                         {% else %}
                             <span class="status rejected">Rejected</span>
@@ -46,7 +44,6 @@
                      <td>
                         <a href="{% url 'update_status' appt.id 'approved' %}" class="btn approve">Approve</a>
                         <a href="{% url 'update_status' appt.id 'rejected' %}" class="btn reject">Reject</a>
-                        <a href="{% url 'update_status' appt.id 'pending' %}" class="btn pending">Pending</a>
                     </td> 
                 </tr>
                 {% empty %}

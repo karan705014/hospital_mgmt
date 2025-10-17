@@ -29,7 +29,6 @@ class User(AbstractUser):
 
 class Appointment(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     ]
@@ -37,7 +36,7 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='doctor_appointments')
     date = models.DateField(default=timezone.now)  #  combined date + time
     time=models.TimeField(default="12:00")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='approved')
 
     booked_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 

@@ -1,65 +1,170 @@
 body {
-  background: linear-gradient(135deg, #071726, #0f3b56, #143a6b);
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #021024, #0a2e45, #164e63);
   color: #e6f0fa;
   min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
-  padding: 20px 10px; /* adjusted for mobile */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.container {
-  max-width: 100%; /* full width on mobile */
+.dashboard {
+  width: 95%;
+  max-width: 1100px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  margin: 40px 0;
+  padding: 25px 30px;
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 8px 24px rgba(2, 18, 28, 0.6);
+.dashboard-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 15px;
+}
+
+.dashboard-header h2 {
+  color: #fff;
+  font-weight: 600;
+}
+
+.dashboard-header .subtitle {
+  color: #a9c7df;
+  font-size: 14px;
+}
+
+.btn-logout {
+  background: #e63946;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+.btn-logout:hover {
+  background: #ff4b4b;
+}
+
+.table {
   color: #e6f0fa;
-  width: 100%; /* take full width */
 }
 
-.table-responsive {
-  overflow-x: auto; /* scroll if table too wide */
+.table thead th {
+  color: #a4d1ff;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.5px;
 }
 
-.btn-logout, .btn.approve, .btn.reject, .btn.pending {
-  width: 100%; /* mobile full width */
-  margin-bottom: 5px; /* spacing */
+.table tbody td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
 }
 
+/* Status Badges */
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+.status.approved {
+  background: #28a745;
+  color: #fff;
+}
+.status.rejected {
+  background: #dc3545;
+  color: #fff;
+}
+.status.pending {
+  background: #ffc107;
+  color: #000;
+}
+
+/* Buttons inside table */
+.actions .btn {
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin: 2px;
+  font-size: 13px;
+  transition: 0.3s;
+  font-weight: 500;
+}
+.btn-approve {
+  background: #28a745;
+  color: white;
+}
+.btn-approve:hover {
+  background: #1e7e34;
+}
+.btn-reject {
+  background: #dc3545;
+  color: white;
+}
+.btn-reject:hover {
+  background: #b02a37;
+}
+.btn-pending {
+  background: #ffc107;
+  color: #000;
+}
+.btn-pending:hover {
+  background: #e0a800;
+}
+
+/* No Data Message */
+.no-data {
+  text-align: center;
+  padding: 30px;
+  color: #b8d8ff;
+  font-size: 15px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .card {
-    padding: 15px;
+  .dashboard {
+    padding: 20px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-logout {
+    width: 100%;
+    margin-top: 10px;
   }
 
   .table thead th, .table tbody td {
-    font-size: 13px;
-    padding: 8px 6px;
-  }
-
-  .status {
     font-size: 12px;
-    padding: 4px 8px;
   }
 }
 
 @media (max-width: 480px) {
-  .card {
-    padding: 12px;
+  .dashboard {
+    padding: 15px;
   }
 
   .table thead th, .table tbody td {
     font-size: 11px;
-    padding: 6px 4px;
+    padding: 8px 4px;
+  }
+
+  .btn {
+    font-size: 11px;
+    padding: 5px 10px;
   }
 
   .status {
-    font-size: 10px;
-    padding: 3px 6px;
-  }
-
-  .btn-logout, .btn.approve, .btn.reject, .btn.pending {
-    font-size: 12px;
-    padding: 8px;
+    font-size: 11px;
+    padding: 4px 8px;
   }
 }

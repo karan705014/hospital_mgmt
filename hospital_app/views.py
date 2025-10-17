@@ -3,6 +3,10 @@ from django.contrib import messages
 from .models import Appointment, User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.conf import settings
+from .emails import send_rejection_email
+
 
 User = get_user_model()
 
@@ -55,25 +59,25 @@ def registration_store(request):
 def login_verify(request):
     error=None
     if request.method=='POST':
-        role=request.POST.get("role")
+       # role=request.POST.get("role")
         username=request.POST.get("username")
         password=request.POST.get("password")
         try:
-            user = User.objects.filter(username=username, role=role).first()
+            user = User.objects.filter(username=username).first()
             if user and check_password(password,user.password):
                 request.session['user_id']=user.id
                 request.session['role']=user.role
 
-                if role=='patient':
+                if user.role=='patient':
                     return redirect('patient_home')
-                if role=='doctor':
+                if user.role=='doctor':
                     return redirect('doctor_home')
-                if role=='admin':
+                if user.role=='admin':
                     return redirect('admin_home')
             else:
                 error="invalid username or password"
         except User.DoesNotExist:
-            error=f"no {role} found with this username"
+            error=f"no {user.role} found with this username"
     return render(request,"new_login_home.html",{"error":error})
 
 
@@ -129,6 +133,17 @@ def appointment_store(request):
                 date=date,
                 time=time
             )
+            subject_patient = "appointment confirmation"
+            message_patient = f"Dear {user.name},\n\nYour appointment with Dr. {doctor.name} has been booked on {date} at {time}.\n\nThank you!"
+            send_mail(subject_patient,message_patient,settings.EMAIL_HOST_USER,[user.email],fail_silently=True)
+
+
+            subject_doctor = "New Appointment Alert"
+            message_doctor = f"Dear Dr. {doctor.name},\n\nYou have a new appointment booked by {user.name} ({user.email}) on {date} at {time}.\n\nPlease check your dashboard for details."
+            send_mail(subject_doctor, message_doctor, settings.EMAIL_HOST_USER, [doctor.email], fail_silently=True)
+
+
+
             messages.success(request, "Your appointment has been booked! Once approved, your status will be updated.")
             return redirect('patient_home') 
         else:
@@ -154,8 +169,18 @@ def update_status_doctor(request, appointment_id, status):
     appt = get_object_or_404(Appointment, id=appointment_id)
     appt.status = status
     appt.save()
+    if status=="rejected":
+        try:
+            send_rejection_email(
+                patient_email=appt.patient.email,
+                doctor_name =appt.doctor.name,
+                date=appt.date,
+                time=appt.time
+            )
+        except Exception as e:
+              print("email sending failed:",e)
     return redirect('doctor_home')
-
+  
 
 # Admin home
 def admin_home(request):
@@ -178,6 +203,17 @@ def update_status(request, appointment_id, status):
     appointments=get_object_or_404(Appointment, id=appointment_id)
     appointments.status=status
     appointments.save()
+
+    if status=="rejected":
+        try:
+            send_rejection_email(
+                patient_email=appointments.patient.email,
+                doctor_name =appointments.doctor.name,
+                date=appointments.date,
+                time=appointments.time
+            )
+        except Exception as e:
+            print("email sending failed:",e)
     return redirect('admin_dashboard')
 
 

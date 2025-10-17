@@ -25,9 +25,9 @@ SECRET_KEY = 'django-insecure-^)$sbw_(kv6=n(y2)qnp5*&+6gpmx#9h=gey70af#u8hjoz$%j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['karansinghks.pythonanywhere.com']
+ALLOWED_HOSTS = ['karansinghks.pythonanywhere.com','*']
 
-
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'hospital_app',
 ]
 
@@ -124,7 +123,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# yestatic ka url hai
+# static url 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "hospital_app/static", 
@@ -136,3 +135,11 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 AUTH_USER_MODEL = 'hospital_app.User' 
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+#EMAIL SETTING# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'aditya705014@gmail.com'  
+EMAIL_HOST_PASSWORD = 'ufra ulim vijf ubur'  
