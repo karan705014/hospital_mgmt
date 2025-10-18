@@ -46,3 +46,15 @@ class Appointment(models.Model):
     class Meta:
         unique_together = ('doctor', 'date', 'time')  
         ordering = ['-booked_at'] 
+
+class Payment(models.Model):
+    appointments = models.ForeignKey(Appointment,on_delete=models.CASCADE,related_name="payments")
+    payment_id = models.CharField(max_length=100)
+    payer_name = models.CharField(max_length=100)
+    payer_email = models.EmailField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=10)
+    created_at =models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.payer_name} - {self.amount} {self.currency}"

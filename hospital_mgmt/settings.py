@@ -137,9 +137,14 @@ AUTH_USER_MODEL = 'hospital_app.User'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 #EMAIL SETTING# Email settings
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'aditya705014@gmail.com'  
 EMAIL_HOST_PASSWORD = 'ufra ulim vijf ubur'  
+
+
+PAYPAL_CLIENT_ID ='AZfdYbKTF5Lb1pi4nk-oBsHHmS6jtpPtfbdifeZuadlILOqUHUL0BPWy0ycUNFcU9PHkSwJQiJuBNZcY'
+PAYPAL_SECRET ='EBsDqEo8q4OQdad-h4W_4fWaaOwrLsHpR9CEUB1sgkKQp28EpnPl-OqTbD-eTuXtW3vv0JccwivDOSGo'

@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Appointment, User
+from .models import Appointment, User,Payment
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.conf import settings
 from .emails import send_rejection_email
-
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import requests
 
 User = get_user_model()
 
@@ -99,60 +102,6 @@ def book_appointment(request):
     })
 
 
-def appointment_store(request):
-    doctors=User.objects.filter(role="doctor")
-    user_id = request.session.get("user_id")
-    if not user_id:
-        return render(request, "book_appointment.html", {
-            "doctors": doctors,
-            "message": "Please login first"
-        })
-
-    user = get_object_or_404(User, role="patient", id=user_id)
-
-    if request.method=='POST':
-        doctor_id=request.POST.get("doctors")
-        time=request.POST.get("time")
-        date=request.POST.get("date")
-        doctor=User.objects.get(id=doctor_id, role="doctor")
-
-        exists = Appointment.objects.filter(
-            doctor_id=doctor_id,
-            date=date,
-            time=time
-        ).exists()
-
-        if exists:
-            messages.error(request, "this slot has been already booked !")
-            return redirect("book_appointment")
-
-        if user.role=="patient":
-            Appointment.objects.create(
-                patient=user,
-                doctor=doctor,
-                date=date,
-                time=time
-            )
-            subject_patient = "appointment confirmation"
-            message_patient = f"Dear {user.name},\n\nYour appointment with Dr. {doctor.name} has been booked on {date} at {time}.\n\nThank you!"
-            send_mail(subject_patient,message_patient,settings.EMAIL_HOST_USER,[user.email],fail_silently=True)
-
-
-            subject_doctor = "New Appointment Alert"
-            message_doctor = f"Dear Dr. {doctor.name},\n\nYou have a new appointment booked by {user.name} ({user.email}) on {date} at {time}.\n\nPlease check your dashboard for details."
-            send_mail(subject_doctor, message_doctor, settings.EMAIL_HOST_USER, [doctor.email], fail_silently=True)
-
-
-
-            messages.success(request, "Your appointment has been booked! Once approved, your status will be updated.")
-            return redirect('patient_home') 
-        else:
-            return render(request,"book_appointment.html",{
-                "doctors":doctors,
-                "message":"only patient can login here"
-            })
-    return render(request,"book_appointment.html")
-
 
 # Doctor home
 def doctor_home(request):
@@ -199,28 +148,42 @@ def admin_dashboard(request):
     appointments = Appointment.objects.all().order_by('-id')
     return render(request, "admin_dashboard.html", {"appointments": appointments})
 
+
 def update_status(request, appointment_id, status):
-    appointments=get_object_or_404(Appointment, id=appointment_id)
-    appointments.status=status
+    appointments= get_object_or_404(Appointment, id=appointment_id)
+    appointments.status = status
     appointments.save()
 
-    if status=="rejected":
+    if status == "rejected":
         try:
+          
             send_rejection_email(
                 patient_email=appointments.patient.email,
-                doctor_name =appointments.doctor.name,
+                doctor_name=appointments.doctor.name,
                 date=appointments.date,
                 time=appointments.time
             )
-        except Exception as e:
-            print("email sending failed:",e)
-    return redirect('admin_dashboard')
 
+            
+            try:
+                payment = Payment.objects.get(appointments=appointments)
+                process_refund(payment.payment_id)
+            except Payment.DoesNotExist:
+                print("No payment found for this appointment.")
+
+        except Exception as e:
+            print("Error in refund/email:", e)
+
+    return redirect("admin_dashboard")  
+
+   
+    
 
 # Manage doctors
 def doctor_add_page(request):
     doctors=User.objects.filter(role="doctor")
     return render(request,"doctor_add_page.html",{"doctors":doctors})
+
 
 def delete_doctor(request, doctor_id):
     doctors=User.objects.get(id=doctor_id)
@@ -264,16 +227,19 @@ def doctor_logout(request):
     request.session.flush()
     return redirect('home')
 
+
 #admin-manage patient
 def patient_add_page(request):
     patients=User.objects.filter(role="patient")
     return render(request,"patient_add_page.html",{"patients":patients})
+
 
 #admin-delete patient
 def delete_patient(request,patient_id):
     patients=User.objects.get(id=patient_id)
     patients.delete()
     return redirect('patient_add_page')
+
 
 #admin-add patient
 def add_patient(request):
@@ -305,8 +271,12 @@ def add_patient(request):
 
 
 #add new page in which patient have option of cheak status and book appointment
+
 def patient_home(request):
-    return render(request,"patient_home.html")
+  user_id=request.session.get("user_id")
+  patient=get_object_or_404(User,id=user_id,role="patient")
+  return render(request,"patient_home.html", {"patient":patient})
+
 
 def patient_status(request):
     user_id = request.session.get("user_id")
@@ -315,6 +285,116 @@ def patient_status(request):
     appointments = Appointment.objects.filter(patient_id=user_id).order_by('-id')
     return render(request, "status_page.html", {"appointments": appointments})
 
+
+# here is the backend of bookappointment
+
+@csrf_exempt
+def appointment_store_paypal(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            user_id = request.session.get('user_id')
+            if not user_id:
+                return JsonResponse({'success': False, 'error': 'User not logged in'})
+
+            patient = get_object_or_404(User, id=user_id, role='patient')
+            doctor = get_object_or_404(User, id=data['doctor_id'], role='doctor')
+
+            # check if slot already booked
+            exists = Appointment.objects.filter(
+                doctor=doctor,
+                date=data['date'],
+                time=data['time']
+            ).exists()
+
+            if exists:
+                return JsonResponse({'success': False, 'error': 'This slot is already booked!'})
+
+            # create appointment
+            appt = Appointment.objects.create(
+                patient=patient,
+                doctor=doctor,
+                date=data['date'],
+                time=data['time'],
+                status='approved'
+            )
+
+            # create payment record
+            Payment.objects.create(
+                appointments=appt,
+                payment_id=data['payment_id'],
+                payer_name=data['payer_name'],
+                payer_email=data['payer_email'],
+                amount=data['payment_amount'],
+                currency=data['payment_currency']
+            )
+
+            # send confirmation emails
+            subject_patient = "Appointment confirmed"
+            message_patient = f"Dear {patient.name},\n\nYour appointment with Dr. {doctor.name} has been booked on {data['date']} at {data['time']}.\n\nPayment ID: {data['payment_id']}"
+            send_mail(subject_patient, message_patient, settings.EMAIL_HOST_USER, [patient.email], fail_silently=True)
+
+            subject_doctor = "New Appointment Alert"
+            message_doctor = f"Dear Dr. {doctor.name},\n\nYou have a new appointment booked by {patient.name} ({patient.email}) on {data['date']} at {data['time']}.\n\nPayment ID: {data['payment_id']}"
+            send_mail(subject_doctor, message_doctor, settings.EMAIL_HOST_USER, [doctor.email], fail_silently=True)
+
+            return JsonResponse({'success': True})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+
+# showing payment details for admin
+
+def admin_payment_details(request):
+    payments = Payment.objects.all().order_by("-created_at")
+    return render(request, "payment_details.html", {"payments": payments})
+
+
+
+
+def process_refund(payment_id):
+    payment = Payment.objects.get(payment_id=payment_id)
+    if not payment:
+       raise Exception("Payment record not found")
+
+    auth_response = requests.post(
+        "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+        headers={"Accept": "application/json"},
+        data={"grant_type": "client_credentials"},
+        auth=(settings.PAYPAL_CLIENT_ID, settings.PAYPAL_SECRET)
+    )
+
+    token = auth_response.json().get("access_token")
+    if not token:
+        raise Exception("Failed to retrieve PayPal token")
+
+    refund_response = requests.post(
+        f"https://api-m.sandbox.paypal.com/v2/payments/captures/{payment_id}/refund",
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}",
+        },
+        json={
+            "amount": {
+                "value": str(payment.amount),
+                "currency_code": payment.currency
+            }
+        }
+    )
+
+    if refund_response.status_code in [200,201]:
+        payment.status = "refunded"
+        payment.save()
+        return True
+    else:
+        raise Exception(refund_response.text)
+
+
+        
 
 
 

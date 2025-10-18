@@ -1,60 +1,145 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Appointment</title>
-    <link rel="stylesheet" href="{% static 'css/book_appointment.css' %}?v=4">
+    <link rel="stylesheet" href="{% static 'css/book_appointment.css' %}?v=6">
 </head>
+
 <body>
 
 <div class="page-wrapper">
     {% if patient %}
-        <div class="welcome-message">
-            Welcome, {{ patient.name }}! Book your appointment below.
-        </div>
-    {% endif %}
-
-    {% if messages %}
-        <div class="alert-container">
-            {% for message in messages %}
-                <div class="alert-box {% if message.tags %}{{ message.tags }}{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
+    <div class="welcome-message">
+        Welcome, {{ patient.name }}! Book your appointment below.
+    </div>
     {% endif %}
 
     <div class="form-wrapper">
-        <form method="POST" action="{% url 'appointment_store' %}">
-            {% csrf_token %}
-            <h2>Book Appointment</h2>
+        <h2>Book Appointment</h2>
 
-            <label for="doctors">Doctor Name:</label>
-            <select name="doctors" required>
-                {% for doc in doctors %}
-                    <option value="{{ doc.id }}">{{ doc.name }}</option>
-                {% empty %}
-                    <option disabled>No doctors found</option>
-                {% endfor %}
-            </select>
+        <label for="doctors">Doctor Name:</label>
+        <select name="doctors" id="doctorSelect" required>
+            {% for doc in doctors %}
+            <option value="{{ doc.id }}">{{ doc.name }}</option>
+            {% empty %}
+            <option disabled>No doctors found</option>
+            {% endfor %}
+        </select>
 
-            <label for="time">Appointment Time:</label>
-            <select name="time" required>
-                <option value="" disabled selected>Select Time</option>
-                {% for slot in time_slots %}
-                    <option value="{{ slot }}">{{ slot }}</option>
-                {% endfor %}
-            </select>
+        <label for="time">Appointment Time:</label>
+        <select name="time" id="timeSelect" required>
+            <option value="" disabled selected>Select Time</option>
+            {% for slot in time_slots %}
+            <option value="{{ slot }}">{{ slot }}</option>
+            {% endfor %}
+        </select>
 
-            <label for="date">Date:</label>
-            <input type="date" name="date" required>
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="dateInput" required><br><br>
 
-            <button type="submit">Book Appointment</button>
-        </form>
+        <!-- PayPal button placeholder -->
+        <button id="showPaypalBtn" type="button">Proceed to Pay with PayPal</button>
+        <div id="paypal-button-container" style="display:none;"></div>
     </div>
 </div>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AZfdYbKTF5Lb1pi4nk-oBsHHmS6jtpPtfbdifeZuadlILOqUHUL0BPWy0ycUNFcU9PHkSwJQiJuBNZcY&currency=USD"></script>
+
+<script>
+const doctorSelect = document.getElementById('doctorSelect');
+const timeSelect = document.getElementById('timeSelect');
+const dateInput = document.getElementById('dateInput');
+const showPaypalBtn = document.getElementById('showPaypalBtn');
+const paypalContainer = document.getElementById('paypal-button-container');
+
+showPaypalBtn.addEventListener('click', function() {
+    // Basic validation
+    if (!doctorSelect.value || !timeSelect.value || !dateInput.value) {
+        alert('Please fill all fields before proceeding to payment!');
+        return;
+    }
+
+    // Show PayPal container and hide original button
+    paypalContainer.style.display = 'block';
+    showPaypalBtn.style.display = 'none';
+
+    // Render PayPal button
+    paypal.Buttons({
+        style: { layout: 'vertical' },
+
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    description: "Hospital Appointment",
+                    amount: { value: '10.00' } 
+                }]
+            });
+        },
+
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                console.log("PayPal details:", details);
+
+                // Get capture ID (important for refund)
+                const captureId = details.purchase_units[0].payments.captures[0].id;
+                const payerName = details.payer.name.given_name + " " + details.payer.name.surname;
+                const payerEmail = details.payer.email_address;
+                const paymentAmount = details.purchase_units[0].payments.captures[0].amount.value;
+                const paymentCurrency = details.purchase_units[0].payments.captures[0].amount.currency_code;
+
+                // Send data to backend
+                fetch("{% url 'appointment_store_paypal' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: JSON.stringify({
+                        doctor_id: doctorSelect.value,
+                        date: dateInput.value,
+                        time: timeSelect.value,
+                        payment_id: captureId,  
+                        payer_name: payerName,
+                        payer_email: payerEmail,
+                        payment_amount: paymentAmount,
+                        payment_currency: paymentCurrency
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Backend response:", data);
+                    if (data.success) {
+                        alert("Appointment booked successfully!");
+                        window.location.href = "{% url 'patient_status' %}";
+                    } else {
+                        alert("Error: " + data.error);
+                        showPaypalBtn.style.display = "block";
+                        paypalContainer.style.display = "none";
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch error:", err);
+                    alert("An error occurred while saving appointment.");
+                    showPaypalBtn.style.display = "block";
+                    paypalContainer.style.display = "none";
+                });
+            });
+        },
+
+        onError: function(err) {
+            console.error("PayPal error:", err);
+            alert("Payment failed or cancelled. Please try again.");
+            showPaypalBtn.style.display = "block";
+            paypalContainer.style.display = "none";
+        }
+    }).render('#paypal-button-container');
+});
+</script>
 
 </body>
 </html>

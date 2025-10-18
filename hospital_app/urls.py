@@ -7,7 +7,6 @@ urlpatterns = [
     path("api/register/", views.registration_store, name="register_api"),
     path('login/verify',views.login_verify,name="login_verify"),
     path('book/appointment/', views.book_appointment, name="book_appointment"),
-    path('appointment/success',views.appointment_store,name="appointment_store"),
     path('adminpage/dashboard/', views.admin_dashboard, name="admin_dashboard"),
     path("adminpage/update_status/<int:appointment_id>/<str:status>/", views.update_status, name="update_status"),
     path("adminpage/home/",views.admin_home,name="admin_home"),
@@ -23,5 +22,8 @@ urlpatterns = [
     path("doctor/home/",views.doctor_home,name="doctor_home"),
     path("doctorpage/update_status_doctor/<int:appointment_id>/<str:status>/", views.update_status_doctor, name="update_status_doctor"),
     path('doctor/logout/',views.doctor_logout,name="doctor_logout"),
+    path('appointment/paypal/', views.appointment_store_paypal, name='appointment_store_paypal'),
+    path('adminpage/payment/details/',views.admin_payment_details ,name="admin_payment_details")
+
 
 ]

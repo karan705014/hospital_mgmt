@@ -10,8 +10,6 @@ Your appointment with Dr. {doctor_name} on {date} at {time} has been rejected.
 
 “Your appointment has been rejected due to unavailability of doctor.”
 
-Regards,
-Hospital Management Team
 """
     send_mail(
         subject,
