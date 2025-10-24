@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()  
+
 """
 Django settings for hospital_mgmt project.
 
@@ -142,9 +146,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'aditya705014@gmail.com'  
-EMAIL_HOST_PASSWORD = 'ufra ulim vijf ubur'  
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
-PAYPAL_CLIENT_ID ='AZfdYbKTF5Lb1pi4nk-oBsHHmS6jtpPtfbdifeZuadlILOqUHUL0BPWy0ycUNFcU9PHkSwJQiJuBNZcY'
-PAYPAL_SECRET ='EBsDqEo8q4OQdad-h4W_4fWaaOwrLsHpR9CEUB1sgkKQp28EpnPl-OqTbD-eTuXtW3vv0JccwivDOSGo'
+PAYPAL_CLIENT_ID = os.getenv('PAYPAL_CLIENT_ID')
+PAYPAL_SECRET = os.getenv('PAYPAL_SECRET')

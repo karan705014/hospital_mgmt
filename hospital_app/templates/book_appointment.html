@@ -85,7 +85,7 @@ showPaypalBtn.addEventListener('click', function() {
             return actions.order.capture().then(function(details) {
                 console.log("PayPal details:", details);
 
-                // Get capture ID (important for refund)
+                // capture ID (important for refund)
                 const captureId = details.purchase_units[0].payments.captures[0].id;
                 const payerName = details.payer.name.given_name + " " + details.payer.name.surname;
                 const payerEmail = details.payer.email_address;
