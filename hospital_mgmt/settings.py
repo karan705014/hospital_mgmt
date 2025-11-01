@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['karansinghks.pythonanywhere.com','*']
 
-# ALLOWED_HOSTS = []
 
 # Application definition
 

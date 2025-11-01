@@ -14,8 +14,8 @@
 <body>
 
   <div class="form-container">
-    <h2>Patient Registration</h2>   
-     {% if message %}
+    <h2>Patient Registration</h2>
+    {% if message %}
     <div class="alert alert-success">
       {{ message }}
     </div>
@@ -32,7 +32,8 @@
 
       <div class="mb-2">
         <label class="form-label">Username</label>
-        <input type="text" class="form-control custom-input" name="username" placeholder="The username must be unique" required>
+        <input type="text" class="form-control custom-input" name="username" placeholder="The username must be unique"
+          required>
       </div>
 
       <div class="mb-2">
@@ -47,22 +48,28 @@
 
       <div class="mb-2">
         <label class="form-label">Phone</label>
-        <input type="text" class="form-control custom-input" name="phone" placeholder="Enter 10-digit number" required>
+        <input type="number" class="form-control custom-input" name="phone"  
+         oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" placeholder="Enter your age"
+          required>
       </div>
 
       <div class="mb-2">
         <label class="form-label">Password</label>
-        <input type="password" class="form-control custom-input" name="password" placeholder="Enter password" minlength="8" required>
+        <input type="password" class="form-control custom-input" name="password"
+          placeholder="Enter password " required>
       </div>
 
       <div class="mb-2">
         <label class="form-label">Confirm Password</label>
-        <input type="password" class="form-control custom-input" name="confirm_password" placeholder="Enter password again" required>
+        <input type="password" class="form-control custom-input" name="confirm_password"
+          placeholder="Enter password again" required>
       </div>
 
       <div class="mb-2">
         <label class="form-label">Age</label>
-        <input type="number" class="form-control custom-input" name="age" placeholder="Enter your age" required>
+        <input type="number" class="form-control custom-input" name="age" min="0" max="999"
+          oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);" placeholder="Enter your age"
+          required>
       </div>
 
       <div class="mb-3">

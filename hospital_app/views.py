@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from .models import Appointment, User,Payment
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
@@ -7,9 +6,12 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .emails import send_rejection_email
 import json
+import re
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -37,7 +39,26 @@ def registration_store(request):
         if password != confirm_password:
             error = "Passwords do not match!"
             return render(request, 'register_form.html', {"error": error})
+        
+        try:
+            validate_email(email)
+        except ValidationError:
+            error ="please enter a valid email"
+            return render(request,'register_form.html',{"error":error})
 
+        try:
+            age = int(age)
+        except ValueError:
+            error = "Please enter a valid number for age!"
+            return render(request, 'register_form.html', {"error": error})
+
+        if age > 120 or age < 0:
+            error = "Please enter a valid age between 0 and 120!"
+            return render(request, 'register_form.html', {"error": error})
+            
+        if not re.match(r'^[6-9]\d{9}$', phone):
+            return render(request, 'register_form.html', {"error": "Please enter a valid 10-digit phone number!"})
+        
 
         if User.objects.filter(username=username).exists():
             error = "Username already taken!"

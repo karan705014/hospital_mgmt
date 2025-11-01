@@ -47,6 +47,32 @@
     </div>
 </div>
 
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const dateInput = document.getElementById("dateInput");
+
+    // Get today's date
+    const today = new Date();
+
+    // Calculate max date 
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 10);
+
+    // Format both dates as yyyy-mm-dd
+    const formatDate = (d) => {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    // Set min and max attributes
+    dateInput.min = formatDate(today);
+    dateInput.max = formatDate(maxDate);
+});
+</script>
+
 <!-- PayPal SDK -->
 <script src="https://www.paypal.com/sdk/js?client-id=AZfdYbKTF5Lb1pi4nk-oBsHHmS6jtpPtfbdifeZuadlILOqUHUL0BPWy0ycUNFcU9PHkSwJQiJuBNZcY&currency=USD"></script>
 
